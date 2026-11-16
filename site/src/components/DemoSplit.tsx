@@ -1,34 +1,34 @@
 type Line = { who?: string; text: string; kind: string };
 
 const CALL: Line[] = [
-  { kind: "event", text: "── Ana Ruiz joined ──" },
-  { kind: "agent", who: "AGENT", text: "Hi Ana, I'm Sam's AI agent." },
-  { kind: "them", who: "ANA", text: "Ha, okay. Hi! So, the onboarding form?" },
-  { kind: "agent", who: "AGENT", text: "Sam wants to shorten it. Which fields have to stay?" },
+  { kind: "event", text: "── Sam joined ──" },
+  { kind: "agent", who: "AGENT", text: "Hi Sam, I'm Yama's AI agent." },
+  { kind: "them", who: "SAM", text: "Hi! Is this about the landing?" },
+  { kind: "agent", who: "AGENT", text: "Yes. It needs two things from you: the font and the main color." },
   { kind: "lat", text: "1.41 s" },
-  { kind: "them", who: "ANA", text: "Email and company size. Do we even store company size?" },
-  { kind: "ask", who: "?", text: "Do we already store company size?  → Claude Code" },
-  { kind: "agent", who: "AGENT", text: "Good question. Let me check Sam's code." },
-  { kind: "agent", who: "AGENT", text: "We do. It's saved already, just optional." },
+  { kind: "them", who: "SAM", text: "Hm. What are we using right now?" },
+  { kind: "ask", who: "?", text: "What font and color does the landing use now?  → Claude Code" },
+  { kind: "agent", who: "AGENT", text: "Good question. Let me check the code." },
+  { kind: "agent", who: "AGENT", text: "Helvetica for the headings, with a blue accent." },
   { kind: "lat", text: "1.52 s" },
-  { kind: "them", who: "ANA", text: "Then make it required. And drop phone." },
-  { kind: "ok", who: "✓", text: "fields: email + company size (required), no phone" },
+  { kind: "them", who: "SAM", text: "Too plain. Chakra Petch, and make it orange." },
+  { kind: "ok", who: "✓", text: "font: Chakra Petch · main color: orange" },
   { kind: "event", text: "── call ended ──" },
 ];
 
 const CODE: Line[] = [
-  { kind: "you", who: ">", text: "/voy:call ask Ana which onboarding fields she wants" },
-  { kind: "tool", who: "●", text: "voy_call_start  contact: Ana · meet: new" },
-  { kind: "meta", text: "meet.google.com/kfp-zmqa-rdw · invite sent to Ana" },
+  { kind: "you", who: ">", text: "polish the landing for launch" },
+  { kind: "claude", who: "●", text: "Font and color are Sam's call. Want me to call Sam?" },
+  { kind: "you", who: ">", text: "yes" },
+  { kind: "tool", who: "●", text: "voy_call_start  contact: Sam · meet: new" },
+  { kind: "meta", text: "meet.google.com/kfp-zmqa-rdw · invite sent to Sam" },
   { kind: "tool", who: "●", text: "voy_call_wait" },
-  { kind: "meta", text: "Ana asked: “Do we even store company size?”" },
-  { kind: "tool", who: "●", text: "Read src/models/account.ts" },
-  { kind: "claude", who: "●", text: "voy_call_answer  “Yes, on the Account model. Optional today.”" },
-  { kind: "tool", who: "●", text: "voy_call_wait" },
-  { kind: "meta", text: "Call ended · 3 of 3 goals answered" },
-  { kind: "meta", text: "→ .voy/calls/2026-11-16-1030-ana.md" },
-  { kind: "claude", who: "●", text: "Making company size required, removing phone." },
-  { kind: "tool", who: "●", text: "Update src/onboarding/StepTwo.tsx" },
+  { kind: "meta", text: "Sam asked: “What are we using right now?”" },
+  { kind: "tool", who: "●", text: "Read src/app/globals.css" },
+  { kind: "claude", who: "●", text: "voy_call_answer  “Helvetica for the headings, with a blue accent.”" },
+  { kind: "meta", text: "Call ended · 2 of 2 goals answered" },
+  { kind: "claude", who: "●", text: "Switching the headings to Chakra Petch and the accent to orange." },
+  { kind: "tool", who: "●", text: "Update src/app/globals.css" },
 ];
 
 function Pane({ title, sub, tone, lines, offset }: { title: string; sub: string; tone: string; lines: Line[]; offset: number }) {
@@ -56,12 +56,12 @@ export function DemoSplit() {
     <figure className="split-demo">
       <div className="split-bar">
         <span className="live">Example call</span>
-        <span>Sam&apos;s Claude Code asks Ana, the PM, what to change</span>
+        <span>Yama&apos;s Claude Code asks Sam, the designer, about the landing</span>
         <span className="median">median 1.46 s voice-to-voice</span>
       </div>
       <div className="panes">
         <Pane title="The call" sub="voy watch" tone="talker" lines={CALL} offset={0} />
-        <Pane title="Claude Code" sub="~/acme-app" tone="reasoner" lines={CODE} offset={1} />
+        <Pane title="Claude Code" sub="~/voyvoy-landing" tone="reasoner" lines={CODE} offset={1} />
       </div>
     </figure>
   );
