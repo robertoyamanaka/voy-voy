@@ -222,7 +222,7 @@ export default function Home() {
                 <summary>Prefer the terminal?</summary>
                 <ol className="cmds">
                   <li>
-                    <CommandBox command={`uv tool install git+https://github.com/${REPO}`} />
+                    <CommandBox command="uv tool install voyvoy" />
                   </li>
                   <li>
                     <CommandBox command="voy init" />

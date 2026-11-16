@@ -39,7 +39,7 @@ macOS asks for your password once (BlackHole) and to let **voy-tap** record audi
 <details><summary>Prefer the terminal?</summary>
 
 ```bash
-uv tool install git+https://github.com/robertoyamanaka/voy-voy
+uv tool install voyvoy
 voy init      # asks for your name + LiveKit keys; builds voy-tap, installs BlackHole
 voy doctor
 ```

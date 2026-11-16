@@ -13,7 +13,7 @@ If the `voy_setup_check` tool is available, go to step 1. Otherwise the VoyVoy c
 1. Check with Bash: `command -v voy || ls ~/.local/bin/voy`. If it's there, go to 4.
 2. Check `command -v uv`. If it's missing, ask, then install it: `brew install uv` if Homebrew is there,
    otherwise `curl -LsSf https://astral.sh/uv/install.sh | sh`.
-3. Ask, then run `uv tool install git+https://github.com/robertoyamanaka/voy-voy` (about a minute).
+3. Ask, then run `uv tool install voyvoy` (about a minute; `uv tool upgrade voyvoy` updates it later).
 4. Ask the user to run `/mcp`, pick **voy**, then **Reconnect** (or restart Claude Code), and tell you when
    that's done. Then continue.
 
