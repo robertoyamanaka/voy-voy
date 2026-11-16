@@ -1,0 +1,9 @@
+.build/
+.venv/
+__pycache__/
+*.pyc
+.voy/
+.superpowers/
+.worktrees/
+.pytest_cache/
+dist/

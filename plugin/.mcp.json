@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "voy": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "for v in \"$(command -v voy)\" \"$HOME/.local/bin/voy\"; do [ -n \"$v\" ] && [ -x \"$v\" ] && exec \"$v\" mcp; done; echo 'VoyVoy is not installed yet: run /voy:setup in Claude Code.' >&2; exit 1"
+      ]
+    }
+  }
+}

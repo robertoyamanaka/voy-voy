@@ -1,0 +1,12 @@
+{
+  "name": "voyvoy",
+  "owner": { "name": "VoyVoy", "url": "https://voyvoy.sh" },
+  "metadata": { "description": "VoyVoy: let Claude Code call people." },
+  "plugins": [
+    {
+      "name": "voy",
+      "source": "./plugin",
+      "description": "Let Claude Code call people: a fast voice agent talks on Google Meet while your Claude Code session answers and steers."
+    }
+  ]
+}

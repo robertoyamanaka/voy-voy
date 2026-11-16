@@ -1,0 +1,11 @@
+{
+  "name": "voy",
+  "displayName": "VoyVoy",
+  "version": "0.1.0",
+  "description": "Let Claude Code call people. Your agent starts a Google Meet (or takes over the call you're in), a fast voice agent asks your questions, and Claude answers code questions mid-call. Always says it's an AI.",
+  "author": { "name": "VoyVoy", "url": "https://voyvoy.sh" },
+  "homepage": "https://voyvoy.sh",
+  "repository": "https://github.com/robertoyamanaka/voy-voy",
+  "license": "MIT",
+  "keywords": ["voice", "calls", "google-meet", "livekit", "slack", "talker-reasoner"]
+}
