@@ -13,6 +13,7 @@ import asyncio
 import collections
 import contextlib
 import json
+import secrets
 import logging
 import os
 import sys
@@ -73,7 +74,7 @@ class RoomLink(Protocol):
     async def connect(
         self, room: str, identity: str, on_event: Callable[[dict], None], on_agent_left: Callable[[], None]
     ) -> None: ...
-    async def dispatch(self, room: str, metadata: str) -> None: ...
+    async def dispatch(self, room: str, metadata: str, agent_name: str = AGENT_NAME) -> None: ...
     async def wait_for_agent(self, timeout: float) -> bool: ...
     async def rpc(self, method: str, payload: dict) -> str: ...
     async def close(self) -> None: ...
@@ -196,11 +197,11 @@ class LiveKitRoomLink:
         await r.connect(self.cfg.livekit.url, make_token(self.cfg, room, identity), self.ROOM_OPTIONS)
         self.room = r
 
-    async def dispatch(self, room: str, metadata: str) -> None:
+    async def dispatch(self, room: str, metadata: str, agent_name: str = AGENT_NAME) -> None:
         lk = api.LiveKitAPI(self.cfg.livekit.url, self.cfg.livekit.api_key, self.cfg.livekit.api_secret)
         try:
             await lk.agent_dispatch.create_dispatch(
-                api.CreateAgentDispatchRequest(agent_name=AGENT_NAME, room=room, metadata=metadata)
+                api.CreateAgentDispatchRequest(agent_name=agent_name, room=room, metadata=metadata)
             )
         finally:
             await lk.aclose()
@@ -304,6 +305,9 @@ class CallManager:
         self._contacts = contacts
         self.agent_join_timeout = agent_join_timeout
         self.agent_rejoin_s = AGENT_REJOIN_S
+        # This session's own worker name: with two Claude Code sessions open (say one from before an
+        # update), LiveKit would otherwise hand a call to whichever worker it likes, old code included.
+        self.agent_name = f"{AGENT_NAME}-{secrets.token_hex(4)}"
         self._rejoin_task: asyncio.Task | None = None
         self._greeted: dict | None = None  # Meet mode: what we told the agent when the guest joined
         self.worker: Proc | None = None
@@ -330,6 +334,7 @@ class CallManager:
             LIVEKIT_URL=self.cfg.livekit.url,
             LIVEKIT_API_KEY=self.cfg.livekit.api_key,
             LIVEKIT_API_SECRET=self.cfg.livekit.api_secret,
+            VOY_AGENT_NAME=self.agent_name,  # the worker registers under it (voyvoy.protocol.AGENT_NAME)
             PYTHONUNBUFFERED="1",
         )
         return env
@@ -509,7 +514,7 @@ class CallManager:
             await self.room_link.connect(room, REASONER_IDENTITY, self._on_event, self._on_agent_left)
             if not self.meet:  # the VoyVoy Chrome window already speaks through the virtual mic
                 self.mic.engage(self.cfg.audio.virtual_mic)  # before the agent's first words
-            await self.room_link.dispatch(room, brief.to_json())
+            await self.room_link.dispatch(room, brief.to_json(), self.agent_name)
             if not await self.room_link.wait_for_agent(self.agent_join_timeout):
                 raise CallError(
                     f"The voice agent didn't join within {self.agent_join_timeout:.0f} s. "

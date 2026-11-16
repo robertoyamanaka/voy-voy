@@ -42,6 +42,7 @@ class FakeSpawner:
 
     async def spawn(self, argv, env):
         p = FakeProc(argv)
+        p.env = env
         self.procs.append(p)
         return p
 
@@ -66,10 +67,11 @@ class FakeRoomLink:
     async def connect(self, room, identity, on_event, on_agent_left):
         self.on_event, self.on_agent_left = on_event, on_agent_left
 
-    async def dispatch(self, room, metadata):
+    async def dispatch(self, room, metadata, agent_name=None):
         if self.dispatch_error:
             raise self.dispatch_error
         self.metadata = json.loads(metadata)
+        self.agent_name = agent_name
 
     async def wait_for_agent(self, timeout):
         if not self.agent_joins:
@@ -509,3 +511,13 @@ async def test_a_self_call_greets_the_user_by_the_name_meet_shows(tmp_path):
     await m.start(["Can you hear me?"], "Yama", "", meet="new", self_call=True)
     await asyncio.sleep(0.1)
     assert (RPC_JOINED, {"name": "Rob Stark"}) in link.rpcs
+
+
+
+async def test_each_session_dispatches_only_to_its_own_worker(tmp_path):
+    m, spawner, _, link = make(tmp_path)
+    other, _, _, _ = make(tmp_path)
+    await m.start(["Which plan?"], None, "", "chrome")
+    worker = spawner.alive("voyvoy.agent.worker")[0]
+    assert worker.env["VOY_AGENT_NAME"] == m.agent_name == link.agent_name
+    assert m.agent_name.startswith("voyvoy-") and m.agent_name != other.agent_name
