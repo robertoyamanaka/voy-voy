@@ -5,7 +5,18 @@ description = "Let Claude Code call people: a fast voice agent talks on Google M
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
+authors = [{ name = "Roberto Yamanaka" }]
+keywords = ["claude-code", "voice-agent", "livekit", "google-meet", "mcp", "talker-reasoner"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Operating System :: MacOS",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Communications :: Telephony",
+]
 dependencies = [
+  "aiohttp>=3.9",
   "livekit-agents>=1.8.12,<2",
   "livekit>=1.2.1",
   "livekit-api>=1.2.3",
@@ -14,6 +25,10 @@ dependencies = [
   "sounddevice>=0.5",
   "numpy",
 ]
+
+[project.urls]
+Homepage = "https://voyvoy.sh"
+Repository = "https://github.com/robertoyamanaka/voy-voy"
 
 [project.scripts]
 voy = "voyvoy.cli:main"
@@ -30,7 +45,7 @@ packages = ["src/voyvoy"]
 exclude = ["src/voyvoy/native/voy-tap/.build"]
 
 [tool.hatch.build.targets.sdist]
-exclude = ["src/voyvoy/native/voy-tap/.build", ".superpowers"]
+exclude = ["src/voyvoy/native/voy-tap/.build", ".superpowers", "site", ".claude-plugin", "plugin"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

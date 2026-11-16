@@ -11,7 +11,7 @@ from voyvoy.protocol import VOY_HOME
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="voy", description="VoyVoy: hand your call to your coding agent.")
+    p = argparse.ArgumentParser(prog="voy", description="VoyVoy: let Claude Code call people.")
     sub = p.add_subparsers(dest="command", required=True, metavar="{init,doctor,watch,playbook,restore,mcp}")
     i = sub.add_parser("init", help="set up ~/.voy, build the audio helper, install the virtual mic")
     i.add_argument("--owner", help="your first name (the agent says \"<name>'s AI agent\")")

@@ -2286,6 +2286,7 @@ name = "voyvoy"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "aiohttp" },
     { name = "livekit" },
     { name = "livekit-agents" },
     { name = "livekit-api" },
@@ -2303,6 +2304,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "aiohttp", specifier = ">=3.9" },
     { name = "livekit", specifier = ">=1.2.1" },
     { name = "livekit-agents", specifier = ">=1.8.12,<2" },
     { name = "livekit-api", specifier = ">=1.2.3" },
