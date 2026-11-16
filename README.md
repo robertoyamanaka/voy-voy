@@ -128,7 +128,7 @@ Every model is a [LiveKit Inference](https://docs.livekit.io/agents/models/infer
 # voice = ""                           # provider voice id
 
 [voices]                               # one voice per call language
-# en = "inworld/inworld-tts-2:Edward"  # the default English voice
+# en = "inworld/inworld-tts-2:Ashley"  # any LiveKit Inference voice; default: [models] tts
 # es = "cartesia/sonic-3:5c5ad5e7-1020-476b-8b91-fdcbe9cc313c"  # the default Spanish voice (Daniela)
 # language = "en"                      # or "es"
 # realtime = "google/gemini-3.8-live"  # experimental: one speech-to-speech model instead of stt+llm+tts

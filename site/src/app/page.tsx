@@ -38,7 +38,7 @@ const SPECS: [string, string][] = [
 const STACK: { part: string; full: string; model: string; note: string; tone: "talker" | "reasoner" }[] = [
   { part: "STT", full: "speech-to-text", model: "deepgram/nova-3", note: "hears English, Spanish, and both at once", tone: "talker" },
   { part: "LLM", full: "the talker", model: "google/gemini-2.5-flash", note: "about 0.4 s to its first word", tone: "talker" },
-  { part: "TTS", full: "the voice", model: "inworld/inworld-tts-2", note: "Edward in English, Daniela in Spanish", tone: "talker" },
+  { part: "TTS", full: "the voice", model: "cartesia/sonic-3", note: "any voice your provider has", tone: "talker" },
   { part: "Reasoner", full: "the brain", model: "your Claude Code session", note: "over MCP: ask · answer · steer", tone: "reasoner" },
 ];
 

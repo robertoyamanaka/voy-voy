@@ -298,7 +298,7 @@ def test_spanish_gets_a_native_voice_by_default_and_config_wins():
 
     cfg = Config(owner="Yama", livekit=LiveKitConfig("wss://x", "k", "s"))
     assert tts_choice(cfg, "es") == ("cartesia/sonic-3", "5c5ad5e7-1020-476b-8b91-fdcbe9cc313c")  # Daniela
-    assert tts_choice(cfg, "en") == ("inworld/inworld-tts-2", "Edward")
+    assert tts_choice(cfg, "en") == ("cartesia/sonic-3", "")
     custom = Config(owner="Yama", livekit=LiveKitConfig("wss://x", "k", "s"), voices={"es": "deepgram/aura-2:estrella"})
     assert tts_choice(custom, "es") == ("deepgram/aura-2", "estrella")
 
@@ -373,3 +373,11 @@ def test_a_stray_word_or_noise_does_not_interrupt_the_agent(monkeypatch):
         monkeypatch.setenv(k, v)
     i = session_options(Config(owner="Yama", livekit=LiveKitConfig("wss://x", "k", "s")), brief())["turn_handling"]["interruption"]
     assert i["min_words"] == 2 and i["min_duration"] == 0.6 and i["resume_false_interruption"] is True
+
+
+
+def test_an_answer_already_given_is_never_repeated():
+    from voyvoy.agent.worker import _answer_template
+
+    txt = _answer_template("Sam")({"call_ids": ["c1"]})
+    assert "don't say them again" in txt and "cut off near the end" in txt and "wait for their reply" in txt

@@ -206,11 +206,10 @@ ACK_TEMPLATE = (
 )
 
 
-# Native voices per call language, picked by ear. English: Inworld "Edward" (half Cartesia's price, same
-# ~0.2 s to first audio mid-call). Spanish: Cartesia "Daniela" (Latin American; Deepgram's Aura-2 Spanish
-# voices measured ~40% slower for the same sentence).
+# Native voices per call language, picked by ear. English: [models] tts (Cartesia Sonic 3's own voice;
+# Inworld "Edward" was tried and dropped: slower calls, ~2.0 s vs ~1.3 s median). Spanish: Cartesia
+# "Daniela" (Latin American; Deepgram's Aura-2 Spanish voices measured ~40% slower for the same sentence).
 DEFAULT_VOICES = {
-    "en": "inworld/inworld-tts-2:Edward",
     "es": "cartesia/sonic-3:5c5ad5e7-1020-476b-8b91-fdcbe9cc313c",
 }
 
@@ -296,14 +295,17 @@ async def handle_steer(session, agent: TalkerAgent, text: str, urgent: bool, reo
 
 
 def _answer_template(owner: str):
-    # Always deliver the engineer's answer, even if the conversation moved on
-    # (the default lets the model reply with nothing). A callable, so braces in
-    # the owner's name can't break str.format.
+    # Deliver the engineer's answer exactly once: even if the conversation moved on (the default lets
+    # the model skip it), but never again after it was said, even cut off near the end (it used to
+    # repeat the whole answer "as a reminder"). A callable, so braces in the owner's name can't break
+    # str.format.
     def template(args) -> str:
         return (
-            f"New answers arrived from {owner}'s engineer (call_ids: {args['call_ids']}). "
-            "If you have not yet told the person what these answers say, tell them now in a natural way, "
-            "even if the conversation moved on. Only skip a part you clearly already said."
+            f"New answers arrived from {owner}'s engineer (call_ids: {args['call_ids']}). Look at what you "
+            "already said: if you already told the person what these answers say, even if you were cut off "
+            "near the end, don't say them again. Say nothing about them and let the conversation carry on "
+            "(if you just asked them something, wait for their reply). Only if you haven't told them yet, "
+            "tell them now in a sentence or two, even if the conversation moved on."
         )
 
     return template

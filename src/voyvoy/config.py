@@ -39,7 +39,7 @@ monitor = ""               # where you hear your agent; empty = system default o
                            # (testing with a phone next to the Mac? use headphones or "off": the phone hears the Mac)
 
 [voices]                   # a voice per call language ("provider/model:voice"); empty = VoyVoy's default
-# en = "inworld/inworld-tts-2:Edward"   # the default English voice
+# en = "cartesia/sonic-3:<voice id>"     # default: [models] tts (Cartesia Sonic 3's own voice)
 # es = "cartesia/sonic-3:<voice id>"     # default: Cartesia "Daniela" (Latin American Spanish)
 """
 
